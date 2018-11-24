@@ -15,3 +15,5 @@ $router->get('/products', 'ProductsController@index');
 $router->post('/products', 'ProductsController@create');
 $router->patch('/products/{id}', 'ProductsController@update');
 $router->delete('/products/{id}', 'ProductsController@delete');
+$router->patch('/products/{id}/discount/{amount}/fixed', 'ProductsController@fixedDiscount');
+$router->patch('/products/{id}/discount/{percent}', 'ProductsController@percentDiscount');

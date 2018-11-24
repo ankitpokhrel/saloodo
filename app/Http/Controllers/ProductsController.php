@@ -95,4 +95,48 @@ class ProductsController extends Controller
 
         return response(null, Response::HTTP_NO_CONTENT);
     }
+
+    /**
+     * Apply fixed discount.
+     *
+     * @param int   $id
+     * @param float $discount
+     *
+     * @return Response
+     */
+    public function fixedDiscount(int $id, float $discount) : Response
+    {
+        $product = $this->productRepo->findOrFail($id);
+
+        $this->validator->validateFixedDiscount($product->price, $discount);
+
+        $this->productRepo->update($product, [
+            'discount' => $discount,
+            'discount_type' => 'FIXED',
+        ]);
+
+        return response(null, Response::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * Apply percent discount.
+     *
+     * @param int   $id
+     * @param float $discount
+     *
+     * @return Response
+     */
+    public function percentDiscount(int $id, float $discount) : Response
+    {
+        $product = $this->productRepo->findOrFail($id);
+
+        $this->validator->validatePercentDiscount($product->price, $discount);
+
+        $this->productRepo->update($product, [
+            'discount' => $discount,
+            'discount_type' => 'PERCENT',
+        ]);
+
+        return response(null, Response::HTTP_NO_CONTENT);
+    }
 }

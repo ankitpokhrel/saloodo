@@ -25,6 +25,7 @@ class ProductsTableSeeder extends Seeder
                 'quantity' => $faker->numberBetween(0, 100),
                 'price' => $faker->randomFloat(2, 50, 200),
                 'discount' => $faker->randomFloat(2, 0, 20),
+                'discount_type' => array_random(['FIXED', 'PERCENT']),
                 'created_at' => \Carbon\Carbon::now(),
                 'updated_at' => \Carbon\Carbon::now(),
             ];
