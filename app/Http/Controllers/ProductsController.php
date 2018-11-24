@@ -5,14 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Services\ProductService;
 use Illuminate\Http\JsonResponse;
 use App\Validators\ProductValidator;
-use App\Repositories\ProductRepository;
 
 class ProductsController extends Controller
 {
-    /** @var Product Repository */
-    protected $productRepo;
+    /** @var Product Service */
+    protected $productService;
 
     /** @var ProductValidator */
     protected $validator;
@@ -20,25 +20,24 @@ class ProductsController extends Controller
     /**
      * ProductsController constructor.
      *
-     * @param ProductRepository $product
-     * @param ProductValidator  $validator
+     * @param ProductService   $product
+     * @param ProductValidator $validator
      */
-    public function __construct(ProductRepository $product, ProductValidator $validator)
+    public function __construct(ProductService $product, ProductValidator $validator)
     {
-        $this->productRepo = $product;
-        $this->validator   = $validator;
+        $this->validator = $validator;
+
+        $this->productService = $product;
     }
 
     /**
      * Get all products.
      *
-     * @param Request $request
-     *
      * @return JsonResponse
      */
-    public function index(Request $request) : JsonResponse
+    public function index() : JsonResponse
     {
-        $allProducts = $this->productRepo->getAllProducts();
+        $allProducts = $this->productService->getAllProducts();
 
         return response()->json($allProducts);
     }
@@ -52,11 +51,11 @@ class ProductsController extends Controller
      */
     public function create(Request $request) : Response
     {
-        $data = $request->only($this->productRepo->getFillable());
+        $data = $request->only($this->productService->getFillable());
 
         $this->validator->validateCreate($data);
 
-        $this->productRepo->create($data);
+        $this->productService->create($data);
 
         return response(null, Response::HTTP_CREATED);
     }
@@ -71,12 +70,12 @@ class ProductsController extends Controller
      */
     public function update(int $id, Request $request) : Response
     {
-        $product = $this->productRepo->findOrFail($id);
-        $fields  = $request->only($this->productRepo->getFillable());
+        $product = $this->productService->findOrFail($id);
+        $fields  = $request->only($this->productService->getFillable());
 
         $this->validator->validateCreate($fields);
 
-        $this->productRepo->update($product, $fields);
+        $this->productService->update($product, $fields);
 
         return response(null, Response::HTTP_NO_CONTENT);
     }
@@ -91,7 +90,7 @@ class ProductsController extends Controller
      */
     public function delete(int $id) : Response
     {
-        $this->productRepo->delete($id);
+        $this->productService->delete($id);
 
         return response(null, Response::HTTP_NO_CONTENT);
     }
@@ -106,11 +105,11 @@ class ProductsController extends Controller
      */
     public function fixedDiscount(int $id, float $discount) : Response
     {
-        $product = $this->productRepo->findOrFail($id);
+        $product = $this->productService->findOrFail($id);
 
         $this->validator->validateFixedDiscount($product->price, $discount);
 
-        $this->productRepo->update($product, [
+        $this->productService->update($product, [
             'discount' => $discount,
             'discount_type' => 'FIXED',
         ]);
@@ -128,11 +127,11 @@ class ProductsController extends Controller
      */
     public function percentDiscount(int $id, float $discount) : Response
     {
-        $product = $this->productRepo->findOrFail($id);
+        $product = $this->productService->findOrFail($id);
 
         $this->validator->validatePercentDiscount($product->price, $discount);
 
-        $this->productRepo->update($product, [
+        $this->productService->update($product, [
             'discount' => $discount,
             'discount_type' => 'PERCENT',
         ]);
