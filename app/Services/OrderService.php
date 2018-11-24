@@ -15,7 +15,7 @@ class OrderService
     protected $orderItem;
 
     /** @var ProductService */
-    protected $productRepo;
+    protected $productService;
 
     /** @var DatabaseManager */
     protected $db;
@@ -37,8 +37,8 @@ class OrderService
         $this->db    = $db;
         $this->order = $order;
 
-        $this->orderItem   = $orderItem;
-        $this->productRepo = $product;
+        $this->orderItem      = $orderItem;
+        $this->productService = $product;
     }
 
     /**
@@ -62,7 +62,7 @@ class OrderService
      */
     public function create(array $productIds) : array
     {
-        $products = $this->productRepo->getProductsById($productIds);
+        $products = $this->productService->getProductsById($productIds);
 
         $items         = [];
         $response      = [];

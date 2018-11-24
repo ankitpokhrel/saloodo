@@ -111,7 +111,7 @@ class ProductsController extends Controller
 
         $this->productService->update($product, [
             'discount' => $discount,
-            'discount_type' => 'FIXED',
+            'discount_type' => Product::DISCOUNT_FIXED,
         ]);
 
         return response(null, Response::HTTP_NO_CONTENT);
@@ -133,7 +133,7 @@ class ProductsController extends Controller
 
         $this->productService->update($product, [
             'discount' => $discount,
-            'discount_type' => 'PERCENT',
+            'discount_type' => Product::DISCOUNT_PERCENT,
         ]);
 
         return response(null, Response::HTTP_NO_CONTENT);

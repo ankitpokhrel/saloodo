@@ -20,7 +20,7 @@ class CreateProductsTable extends Migration
             $table->integer('quantity');
             $table->decimal('price');
             $table->decimal('discount');
-            $table->string('discount_type');
+            $table->string('discount_type')->nullable();
             $table->timestamps();
 
             $table->index('name');

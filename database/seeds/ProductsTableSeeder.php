@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Faker\Generator;
 use App\Models\Product;
 use Illuminate\Database\Seeder;
@@ -25,9 +26,9 @@ class ProductsTableSeeder extends Seeder
                 'quantity' => $faker->numberBetween(0, 100),
                 'price' => $faker->randomFloat(2, 50, 200),
                 'discount' => $faker->randomFloat(2, 0, 20),
-                'discount_type' => array_random(['FIXED', 'PERCENT']),
-                'created_at' => \Carbon\Carbon::now(),
-                'updated_at' => \Carbon\Carbon::now(),
+                'discount_type' => array_random([Product::DISCOUNT_FIXED, Product::DISCOUNT_PERCENT]),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ];
         }
 

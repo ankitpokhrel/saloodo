@@ -45,6 +45,8 @@ class ProductService
     /**
      * Get products by id.
      *
+     * @param array $productIds
+     *
      * @return Collection
      */
     public function getProductsById(array $productIds) : Collection

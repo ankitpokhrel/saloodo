@@ -11,12 +11,28 @@
 |
 */
 
-$router->get('/products', 'ProductsController@index');
-$router->post('/products', 'ProductsController@create');
-$router->patch('/products/{id}', 'ProductsController@update');
-$router->delete('/products/{id}', 'ProductsController@delete');
-$router->patch('/products/{id}/discount/{amount}/fixed', 'ProductsController@fixedDiscount');
-$router->patch('/products/{id}/discount/{percent}', 'ProductsController@percentDiscount');
+use App\Models\User;
 
-$router->post('/bundles', 'BundlesController@create');
-$router->post('/orders', 'OrdersController@create');
+$router->group(
+    ['middleware' => 'jwt.auth:' . User::ROLE_ADMIN],
+    function () use ($router) {
+        $router->post('/products', 'ProductsController@create');
+        $router->patch('/products/{id}', 'ProductsController@update');
+        $router->delete('/products/{id}', 'ProductsController@delete');
+
+        $router->post('/bundles', 'BundlesController@create');
+
+        $router->patch('/products/{id}/discount/{amount}/fixed', 'ProductsController@fixedDiscount');
+        $router->patch('/products/{id}/discount/{percent}', 'ProductsController@percentDiscount');
+    }
+);
+
+$router->group(
+    ['middleware' => 'jwt.auth:' . User::ROLE_ADMIN . ',' . User::ROLE_CUSTOMER],
+    function () use ($router) {
+        $router->get('/products', 'ProductsController@index');
+        $router->post('/orders', 'OrdersController@create');
+    }
+);
+
+$router->post('/users/authenticate', 'UsersController@authenticate');

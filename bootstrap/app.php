@@ -27,6 +27,10 @@ $app = new Laravel\Lumen\Application(
 
 $app->withEloquent();
 
+$app->routeMiddleware([
+    'jwt.auth' => App\Http\Middleware\Authenticate::class,
+]);
+
 /*
 |--------------------------------------------------------------------------
 | Error Format

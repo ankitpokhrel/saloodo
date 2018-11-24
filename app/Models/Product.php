@@ -7,6 +7,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Product extends Model
 {
+    /** @const string */
+    const DISCOUNT_FIXED = 'fixed';
+
+    /** @const string */
+    const DISCOUNT_PERCENT = 'percent';
+
     /** @var string Table */
     protected $table = 'products';
 

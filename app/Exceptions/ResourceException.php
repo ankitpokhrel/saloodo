@@ -15,6 +15,9 @@ class ResourceException extends HttpException
     /** @var string */
     const SERVER_ERROR_CODE = 'server_error';
 
+    /** @var string */
+    const AUTH_ERROR_CODE = 'auth_error';
+
     /**
      * MessageBag errors.
      *
@@ -33,7 +36,7 @@ class ResourceException extends HttpException
      *
      * @return void
      */
-    public function __construct($errorCode = null, $errors = null, Exception $previous = null, $headers = [], $code = 0)
+    public function __construct($errorCode = null, $errors = null, $code = 0, Exception $previous = null, $headers = [])
     {
         if (is_null($errors)) {
             $this->errors = new MessageBag;
