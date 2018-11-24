@@ -29,6 +29,28 @@ $app->withEloquent();
 
 /*
 |--------------------------------------------------------------------------
+| Error Format
+|--------------------------------------------------------------------------
+|
+| Overwrite default error message format
+|
+*/
+$app->singleton('api.exception', function ($app) {
+    return new App\Exceptions\ApiHandler(
+        $app['Illuminate\Contracts\Debug\ExceptionHandler'],
+        [
+            'status_code' => ':status_code',
+            'error_code' => ':message',
+            'errors' => ':errors',
+            'code' => ':code',
+            'debug' => ':debug',
+        ],
+        $app['config']->get('api.debug')
+    );
+});
+
+/*
+|--------------------------------------------------------------------------
 | Register Container Bindings
 |--------------------------------------------------------------------------
 |
