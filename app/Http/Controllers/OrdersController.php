@@ -43,7 +43,7 @@ class OrdersController extends Controller
 
         $this->validator->validateCreate($products);
 
-        $orderMeta = $this->orderService->create($products);
+        $orderMeta = $this->orderService->create($products, $request->user->id);
 
         return response($orderMeta, Response::HTTP_CREATED);
     }

@@ -60,7 +60,7 @@ class OrderService
      *
      * @return array
      */
-    public function create(array $productIds) : array
+    public function create(array $productIds, int $userId) : array
     {
         $products = $this->productService->getProductsById($productIds);
 
@@ -88,9 +88,9 @@ class OrderService
             ];
         }
 
-        $this->db->transaction(function () use ($items, $cartTotal, $discountTotal) {
+        $this->db->transaction(function () use ($items, $cartTotal, $discountTotal, $userId) {
             $order = $this->order->create([
-                'user_id' => 1,
+                'user_id' => $userId,
                 'order_number' => str_random('16'),
                 'payment_method' => 'COD',
                 'transaction_id' => str_random('32'),

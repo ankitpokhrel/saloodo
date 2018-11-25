@@ -25,7 +25,7 @@ class UsersTableSeeder extends Seeder
             ],
             [
                 'name' => 'John Doe',
-                'email' => 'jonh@ankit.pl',
+                'email' => 'john@ankit.pl',
                 'password' => app('hash')->make('doe'),
                 'role' => 'customer',
                 'created_at' => \Carbon\Carbon::now(),

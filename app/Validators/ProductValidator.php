@@ -22,6 +22,21 @@ class ProductValidator extends AbstractValidator
     }
 
     /**
+     * Validate resource creation.
+     *
+     * @param array $data
+     */
+    public function validateUpdate(array $data)
+    {
+        $this->validate($data, [
+            'name' => 'unique:products,name',
+            'description' => 'min:10',
+            'quantity' => 'integer',
+            'price' => 'numeric|min:0',
+        ]);
+    }
+
+    /**
      * Validate discount.
      *
      * @param float $price
@@ -29,8 +44,16 @@ class ProductValidator extends AbstractValidator
      */
     public function validateFixedDiscount(float $price, float $discount)
     {
+        $priceAfterDiscount = $price - $discount;
+
+        if ($priceAfterDiscount < 0) {
+            throw new ResourceException(
+                ResourceException::VALIDATION_ERROR_CODE,
+                ['discount' => 'Invalid discount amount.']
+            );
+        }
+
         $this->validate(
-            ['price' => $price - $discount],
             ['price' => 'required|numeric|min:0'],
             ['min' => 'Invalid discount price']
         );
@@ -47,7 +70,7 @@ class ProductValidator extends AbstractValidator
         if ($discount < 0 || $discount > 100) {
             throw new ResourceException(
                 ResourceException::VALIDATION_ERROR_CODE,
-                ['Invalid discount percent.']
+                ['discount' => 'Invalid discount percent.']
             );
         }
 

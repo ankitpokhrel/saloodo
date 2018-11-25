@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Firebase\JWT\JWT;
 use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
@@ -41,8 +42,8 @@ class UserService
             $payload = [
                 'issuer' => env('APP_NAME'),
                 'subject' => $user->id,
-                'issued_at' => time(),
-                'expired_at' => time() + 60 * 60,
+                'issued_at' => Carbon::now()->toDateTimeString(),
+                'expired_at' => Carbon::now()->addHour()->toDateTimeString(),
             ];
 
             return response()->json([
@@ -54,7 +55,7 @@ class UserService
 
         throw new ResourceException(
             ResourceException::AUTH_ERROR_CODE,
-            ['Wrong credentials.'],
+            ['auth' => 'Wrong credentials.'],
             Response::HTTP_BAD_REQUEST);
     }
 }

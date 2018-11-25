@@ -124,7 +124,7 @@ class OrderServiceTest extends \UnitTestCase
 
         $this->assertEquals(
             $expected,
-            (new OrderService(app('db'), $order, $orderItem, $productService))->create([1, 2])
+            (new OrderService(app('db'), $order, $orderItem, $productService))->create([1, 2], 1)
         );
     }
 }

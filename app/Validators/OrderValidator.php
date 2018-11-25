@@ -16,7 +16,7 @@ class OrderValidator extends AbstractValidator
         if (empty($products)) {
             throw new ResourceException(
                 ResourceException::VALIDATION_ERROR_CODE,
-                ['Empty order.']
+                ['products' => 'No products in order.']
             );
         }
     }

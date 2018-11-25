@@ -31,6 +31,9 @@ $app->routeMiddleware([
     'jwt.auth' => App\Http\Middleware\Authenticate::class,
 ]);
 
+// Configurations.
+$app->configure('database');
+
 /*
 |--------------------------------------------------------------------------
 | Error Format

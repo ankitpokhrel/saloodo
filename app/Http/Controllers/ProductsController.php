@@ -73,7 +73,7 @@ class ProductsController extends Controller
         $product = $this->productService->findOrFail($id);
         $fields  = $request->only($this->productService->getFillable());
 
-        $this->validator->validateCreate($fields);
+        $this->validator->validateUpdate($fields);
 
         $this->productService->update($product, $fields);
 

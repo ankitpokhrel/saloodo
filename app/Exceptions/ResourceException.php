@@ -44,7 +44,13 @@ class ResourceException extends HttpException
             $this->errors = is_array($errors) ? new MessageBag($errors) : $errors;
         }
 
-        parent::__construct(Response::HTTP_UNPROCESSABLE_ENTITY, $errorCode, $previous, $headers, $code);
+        parent::__construct(
+            $code > 0 ? $code : Response::HTTP_UNPROCESSABLE_ENTITY,
+            $errorCode,
+            $previous,
+            $headers,
+            $code
+        );
     }
 
     /**
