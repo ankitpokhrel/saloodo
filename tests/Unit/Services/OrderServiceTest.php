@@ -43,7 +43,7 @@ class OrderServiceTest extends \UnitTestCase
      */
     public function it_creates_order()
     {
-        $order = m::mock(Order::class);
+        $order = m::mock(Order::class)->makePartial();
 
         $orderItem       = m::mock(OrderItem::class);
         $productService  = m::mock(ProductService::class);
@@ -51,7 +51,6 @@ class OrderServiceTest extends \UnitTestCase
 
         $products = [
             new Product([
-                'id' => 1,
                 'name' => 'Test',
                 'description' => 'Test data',
                 'quantity' => 5,
@@ -60,7 +59,6 @@ class OrderServiceTest extends \UnitTestCase
                 'discount_type' => 'fixed',
             ]),
             new Product([
-                'id' => 2,
                 'name' => 'Test2',
                 'description' => 'Test data2',
                 'quantity' => 15,
@@ -69,6 +67,9 @@ class OrderServiceTest extends \UnitTestCase
                 'discount_type' => 'fixed',
             ]),
         ];
+
+        $products[0]->id = 1;
+        $products[1]->id = 2;
 
         $productService
             ->shouldReceive('getProductsById')
@@ -106,12 +107,14 @@ class OrderServiceTest extends \UnitTestCase
             'data' => [
                 'items' => [
                     [
+                        'product_id' => 1,
                         'name' => 'Test',
                         'price' => 5.5,
                         'discount' => 0,
                         'sale_price' => 5.5,
                     ],
                     [
+                        'product_id' => 2,
                         'name' => 'Test2',
                         'price' => 7.5,
                         'discount' => 5,

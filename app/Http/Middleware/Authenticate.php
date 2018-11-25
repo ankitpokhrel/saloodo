@@ -45,7 +45,7 @@ class Authenticate
         if ( ! $token) {
             throw new ResourceException(
                 ResourceException::AUTH_ERROR_CODE,
-                ['Invalid token.'],
+                ['auth' => 'Invalid token.'],
                 Response::HTTP_BAD_REQUEST);
         }
 
@@ -54,13 +54,13 @@ class Authenticate
         } catch (ExpiredException $e) {
             throw new ResourceException(
                 ResourceException::AUTH_ERROR_CODE,
-                ['Token expired.'],
+                ['auth' => 'Token expired.'],
                 Response::HTTP_BAD_REQUEST
             );
         } catch (Exception $e) {
             throw new ResourceException(
                 ResourceException::AUTH_ERROR_CODE,
-                ['Cannot decode token.'],
+                ['auth' => 'Cannot decode token.'],
                 Response::HTTP_BAD_REQUEST
             );
         }
@@ -70,7 +70,7 @@ class Authenticate
         if ( ! in_array($user->role, $roles)) {
             throw new ResourceException(
                 ResourceException::AUTH_ERROR_CODE,
-                ['Unauthorized.'],
+                ['auth' => 'Unauthorized.'],
                 Response::HTTP_UNAUTHORIZED
             );
         }

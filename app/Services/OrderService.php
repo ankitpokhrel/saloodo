@@ -64,8 +64,8 @@ class OrderService
     {
         $products = $this->productService->getProductsById($productIds);
 
-        $items         = [];
         $response      = [];
+        $orderItems    = [];
         $cartTotal     = 0;
         $discountTotal = 0;
 
@@ -73,22 +73,18 @@ class OrderService
             $cartTotal     += $product->price;
             $discountTotal += $product->discount;
 
-            $items[] = $this->orderItem->newInstance([
+            $orderItem = [
                 'product_id' => $product->id,
                 'price' => $product->price,
                 'discount' => $product->discount,
                 'sale_price' => $product->price - $product->discount,
-            ]);
-
-            $response[] = [
-                'name' => $product->name,
-                'price' => $product->price,
-                'discount' => $product->discount,
-                'sale_price' => $product->price - $product->discount,
             ];
+
+            $response[]   = $orderItem + ['name' => $product->name];
+            $orderItems[] = $this->orderItem->newInstance($orderItem);
         }
 
-        $this->db->transaction(function () use ($items, $cartTotal, $discountTotal, $userId) {
+        $this->db->transaction(function () use ($orderItems, $cartTotal, $discountTotal, $userId) {
             $order = $this->order->create([
                 'user_id' => $userId,
                 'order_number' => str_random('16'),
@@ -99,7 +95,7 @@ class OrderService
                 'status' => 'pending',
             ]);
 
-            $order->items()->saveMany($items);
+            $order->items()->saveMany($orderItems);
         });
 
         return [
