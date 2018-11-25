@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\Models\User;
 use Carbon\Carbon;
+use App\Models\User;
 use Firebase\JWT\JWT;
 use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;

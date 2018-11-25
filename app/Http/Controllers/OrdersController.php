@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Validators\OrderValidator;
-use App\Services\OrderService;
 use Illuminate\Http\Response;
+use App\Services\OrderService;
+use App\Validators\OrderValidator;
 
 class OrdersController extends Controller
 {

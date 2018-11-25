@@ -10,6 +10,7 @@ class BundleValidator extends AbstractValidator
      * Validate bundle creation.
      *
      * @param array $data
+     * @param array $products
      */
     public function validateCreate(array $data, array $products)
     {

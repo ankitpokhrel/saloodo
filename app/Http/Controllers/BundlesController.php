@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Validators\BundleValidator;
 use App\Services\BundleService;
+use App\Validators\BundleValidator;
 
 class BundlesController extends Controller
 {
@@ -23,8 +23,9 @@ class BundlesController extends Controller
      */
     public function __construct(BundleService $bundle, BundleValidator $validator)
     {
+        $this->validator = $validator;
+
         $this->bundleService = $bundle;
-        $this->validator  = $validator;
     }
 
     /**
@@ -32,8 +33,9 @@ class BundlesController extends Controller
      *
      * @param Request $request
      *
-     * @return Response
      * @throws \Throwable
+     *
+     * @return Response
      */
     public function create(Request $request) : Response
     {

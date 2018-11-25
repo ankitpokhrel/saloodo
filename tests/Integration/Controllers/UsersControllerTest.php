@@ -10,7 +10,7 @@ class UsersControllerTest extends \IntegrationTestCase
     /**
      * @test
      *
-     *  @covers ::__construct
+     * @covers ::__construct
      * @covers ::authenticate
      */
     public function it_throws_validation_exception_for_invalid_request()

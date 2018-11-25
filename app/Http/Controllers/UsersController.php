@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\UserService;
-use Illuminate\Http\JsonResponse;
 use App\Validators\UserValidator;
+use Illuminate\Http\JsonResponse;
 
 class UsersController extends Controller
 {
@@ -23,7 +23,8 @@ class UsersController extends Controller
      */
     public function __construct(UserService $user, UserValidator $validator)
     {
-        $this->validator   = $validator;
+        $this->validator = $validator;
+
         $this->userService = $user;
     }
 
