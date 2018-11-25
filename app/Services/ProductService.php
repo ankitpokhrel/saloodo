@@ -35,11 +35,29 @@ class ProductService
     /**
      * Get all products.
      *
-     * @return Collection
+     * @return array
      */
-    public function getAllProducts() : Collection
+    public function getAllProducts() : array
     {
-        return $this->product->all();
+        $products = $this->product->paginate(5)->toArray();
+
+        return [
+            'data' => $products['data'],
+            'links' => [
+                'first_page_url' => $products['first_page_url'],
+                'last_page_url' => $products['last_page_url'],
+                'next_page_url' => $products['next_page_url'],
+                'prev_page_url' => $products['prev_page_url'],
+            ],
+            'meta' => [
+                'total' => $products['total'],
+                'current_page' => $products['current_page'],
+                'last_page' => $products['last_page'],
+                'per_page' => $products['per_page'],
+                'from' => $products['from'],
+                'to' => $products['to'],
+            ],
+        ];
     }
 
     /**

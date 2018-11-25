@@ -42,24 +42,36 @@ class ProductServiceTest extends \UnitTestCase
         $product = m::mock(Product::class);
 
         $data = collect([
-            [
-                'name' => 'Test',
-                'description' => 'Test data',
-                'quantity' => 5,
-                'price' => 5.5,
-                'discount' => 0,
-                'discount_type' => Product::DISCOUNT_FIXED,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
+            'current_page' => 1,
+            'data' => [
+                [
+                    'name' => 'Test',
+                    'description' => 'Test data',
+                    'quantity' => 5,
+                    'price' => 5.5,
+                    'discount' => 0,
+                    'discount_type' => Product::DISCOUNT_FIXED,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ],
             ],
+            'first_page_url' => 'http://first-page',
+            'from' => 1,
+            'last_page' => 1,
+            'last_page_url' => 'http://last-page',
+            'next_page_url' => 'http://next-page',
+            'per_page' => 5,
+            'prev_page_url' => 'http://prev-page',
+            'total' => 1,
+            'to' => 1,
         ]);
 
         $product
-            ->shouldReceive('all')
+            ->shouldReceive('paginate')
             ->once()
             ->andReturn($data);
 
-        (new ProductService($product))->getAllProducts($data);
+        (new ProductService($product))->getAllProducts();
     }
 
     /**

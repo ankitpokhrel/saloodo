@@ -13,14 +13,69 @@ class ProductsControllerTest extends \IntegrationTestCase
      * @covers ::__construct
      * @covers ::index
      */
-    public function it_returns_all_products_for_admin_user()
+    public function it_returns_paginated_products_for_admin_user()
     {
         $products = $this->get('/products', [
             'token' => $this->getAdminUser(),
         ]);
 
+        $response = $products->response->getOriginalContent();
+
+        $expectedMeta = [
+            'total' => 15,
+            'current_page' => 1,
+            'last_page' => 3,
+            'per_page' => 5,
+            'from' => 1,
+            'to' => 5,
+        ];
+
+        $expectedLinks = [
+            'first_page_url' => 'http://localhost/products?page=1',
+            'last_page_url' => 'http://localhost/products?page=3',
+            'next_page_url' => 'http://localhost/products?page=2',
+            'prev_page_url' => null,
+        ];
+
         $this->assertResponseOk();
-        $this->assertEquals(15, $products->response->getOriginalContent()->count());
+        $this->assertEquals(5, count($response['data']));
+        $this->assertEquals($expectedMeta, $response['meta']);
+        $this->assertEquals($expectedLinks, $response['links']);
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::index
+     */
+    public function it_returns_products_from_next_page()
+    {
+        $products = $this->get('/products?page=2', [
+            'token' => $this->getAdminUser(),
+        ]);
+
+        $response = $products->response->getOriginalContent();
+
+        $expectedMeta = [
+            'total' => 15,
+            'current_page' => 2,
+            'last_page' => 3,
+            'per_page' => 5,
+            'from' => 6,
+            'to' => 10,
+        ];
+
+        $expectedLinks = [
+            'first_page_url' => 'http://localhost/products?page=1',
+            'last_page_url' => 'http://localhost/products?page=3',
+            'next_page_url' => 'http://localhost/products?page=3',
+            'prev_page_url' => 'http://localhost/products?page=1',
+        ];
+
+        $this->assertResponseOk();
+        $this->assertEquals(5, count($response['data']));
+        $this->assertEquals($expectedMeta, $response['meta']);
+        $this->assertEquals($expectedLinks, $response['links']);
     }
 
     /**
@@ -29,14 +84,34 @@ class ProductsControllerTest extends \IntegrationTestCase
      * @covers ::__construct
      * @covers ::index
      */
-    public function it_returns_all_products_for_customer_user()
+    public function it_returns_paginated_products_for_customer_user()
     {
         $products = $this->get('/products', [
             'token' => $this->getCustomerUser(),
         ]);
 
+        $response = $products->response->getOriginalContent();
+
+        $expectedMeta = [
+            'total' => 15,
+            'current_page' => 1,
+            'last_page' => 3,
+            'per_page' => 5,
+            'from' => 1,
+            'to' => 5,
+        ];
+
+        $expectedLinks = [
+            'first_page_url' => 'http://localhost/products?page=1',
+            'last_page_url' => 'http://localhost/products?page=3',
+            'next_page_url' => 'http://localhost/products?page=2',
+            'prev_page_url' => null,
+        ];
+
         $this->assertResponseOk();
-        $this->assertEquals(15, $products->response->getOriginalContent()->count());
+        $this->assertEquals(5, count($response['data']));
+        $this->assertEquals($expectedMeta, $response['meta']);
+        $this->assertEquals($expectedLinks, $response['links']);
     }
 
     /**
