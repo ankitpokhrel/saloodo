@@ -19,7 +19,7 @@ class ProductsTableSeeder extends Seeder
     {
         $products = [];
 
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < 15; $i++) {
             $products[] = [
                 'name' => $faker->realText(100),
                 'description' => $faker->text(700),
